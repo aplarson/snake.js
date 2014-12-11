@@ -48,6 +48,7 @@
       }
     });
     $("#new-game").on("click", function (event) {
+      view.board.start();
       view.gamestate = setInterval(view.step.bind(view), view.board.interval);
     });
   };
