@@ -64,13 +64,13 @@
   
   Snake.prototype.grow = function () {
     this.growth += 4;
-    this.board.score += 10;
   }
   
   var Board = SnakeGame.Board = function (){
     this.board = buildBoard(20);
     this.score = 0;
     this.interval = 300;
+    this.displayScore;
   }
   
   function buildBoard(dimensions) {
@@ -110,6 +110,8 @@
   Board.prototype.start = function () {
     this.snake = new Snake(this);
     this.apples = [];
+    this.score = 0;
+    this.displayScore();
   };
   
   Board.prototype.checkInBounds = function (coord) {
@@ -143,7 +145,9 @@
       break;
     case "apple":
       this.removeApple(coord);
+      this.score += 10;
       this.snake.grow();
+      this.displayScore();
       break;
     default:
       break;
@@ -159,6 +163,10 @@
     })
   }
   
+  Board.prototype.displayScore = function () {
+    $('#score').html(this.score);
+  }
+
   Board.prototype.possiblyPlaceApple = function () {
     var board = this
     
