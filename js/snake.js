@@ -4,10 +4,10 @@
   }
   
   var Snake = SnakeGame.Snake = function (board) {
-    this.dir = "E";
     this.segments = [ (new Coord([0,0])), (new Coord([0,1])) ];
-    this.board = board
-    this.growth = 0
+    this.board = board;
+    this.growth = 0;
+    this.start ();
   }
   
   var Coord = SnakeGame.Coord = function (pos) {
@@ -57,8 +57,12 @@
     this.board.checkInBounds(newCoord);
     this.segments.push(newCoord);
   }
+
+  Snake.prototype.start = function () {
+    this.dir = "E";
+  }
   
-  Snake.prototype.turn = function (dir){
+  Snake.prototype.turn = function (dir) {
     this.dir = dir;
   }
   
