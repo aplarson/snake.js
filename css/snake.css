@@ -23,3 +23,7 @@ board {
 h1, p {
   text-align: center;
 }
+
+.btn {
+  text-align: center;
+}
