@@ -61,6 +61,7 @@
   }
 
   Snake.prototype.turn = function (dir) {
+    debugger
     if (dir !== Snake.OPPDIRS[this.last_dir]) {
       this.dir = dir;
     }
@@ -68,6 +69,13 @@
 
   Snake.prototype.grow = function () {
     this.growth += 4;
+  }
+
+  Snake.OPPDIRS = {
+    "N": "S",
+    "E": "W",
+    "S": "N",
+    "W": "E"
   }
 
   var Board = SnakeGame.Board = function (){
