@@ -61,7 +61,9 @@
   }
 
   Snake.prototype.turn = function (dir) {
-    this.dir = dir;
+    if (dir !== Snake.OPPDIRS[this.last_dir]) {
+      this.dir = dir;
+    }
   }
 
   Snake.prototype.grow = function () {
