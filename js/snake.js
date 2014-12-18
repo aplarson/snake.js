@@ -61,7 +61,6 @@
   }
 
   Snake.prototype.turn = function (dir) {
-    debugger
     if (dir !== Snake.OPPDIRS[this.last_dir]) {
       this.dir = dir;
     }
