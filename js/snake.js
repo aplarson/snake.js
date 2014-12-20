@@ -195,8 +195,8 @@
   Board.prototype.possiblyPlaceApple = function () {
     var board = this
 
-    if (this.apples.length < 1){
-      _.times(5, function () {
+    if (this.apples.length < 5){
+      _.times(2, function () {
         var pos = randomBoardPos(board.board.length)
         if (board.squareContents(pos) === "empty"){
           board.apples.push(new SnakeGame.Coord(pos))

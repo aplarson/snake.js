@@ -55,6 +55,7 @@
 
   View.prototype.gameOver = function () {
     clearInterval(this.gamestate);
+    alert("Game Over. Your score was " + this.board.score);
   };
 
   View.prototype.step = function (){
