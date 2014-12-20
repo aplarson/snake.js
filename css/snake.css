@@ -1,4 +1,4 @@
-.segment, .apple, .empty {
+.segment, .apple, .empty, .brick {
   display: inline-block;
   height: 20px;
   width: 20px;
@@ -7,6 +7,10 @@
 
 .apple {
   background: red;
+}
+
+.brick {
+  background: blue;
 }
 
 .segment {

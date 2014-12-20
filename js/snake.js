@@ -98,17 +98,20 @@
   }
 
   Board.prototype.render = function () {
-    var fn = this;
+    var board = this;
     var boardHTML = "<div class=\"board\">"
     this.board.forEach(function (el, idx) {
       boardHTML += "<div class=\"row\">"
      el.forEach(function (innerEl, innerIdx) {
-       switch (fn.squareContents([idx, innerIdx])) {
+       switch (board.squareContents([idx, innerIdx])) {
        case "segment":
          boardHTML += "<div class=\"segment\"></div>"
          break;
        case "apple":
          boardHTML += "<div class=\"apple\"></div>"
+         break;
+       case "brick":
+         boardHTML += "<div class=\"brick\"></div>"
          break;
        default:
          boardHTML += "<div class=\"empty\"></div>"
@@ -122,6 +125,7 @@
   Board.prototype.start = function () {
     this.snake = new Snake(this);
     this.apples = [];
+    this.bricks = [];
     this.score = 0;
     this.displayScore();
   };
@@ -136,6 +140,11 @@
 
   Board.prototype.squareContents = function (pos) {
     var object = "empty";
+    this.bricks && this.bricks.forEach(function (brick) {
+      if (brick.atPos(pos)) {
+        object = "brick";
+      }
+    })
     this.snake && this.snake.segments.forEach(function (segment) {
       if (segment.atPos(pos)) {
         object = "segment";
@@ -161,6 +170,9 @@
       this.snake.grow();
       this.displayScore();
       break;
+    case "brick":
+      throw GameOverError
+      break;
     default:
       break;
     }
@@ -171,6 +183,7 @@
     this.apples.forEach(function(apple, idx){
       if (apple.x === coord.x && apple.y === coord.y){
         board.apples.splice(idx, 1);
+        board.bricks.push(coord);
       }
     })
   }
