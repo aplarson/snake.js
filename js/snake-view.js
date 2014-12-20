@@ -2,7 +2,7 @@
   if (typeof SnakeGame === "undefined") {
     window.SnakeGame = {};
   }
-  
+
   var View = SnakeGame.View = function ($el) {
     this.board = new SnakeGame.Board;
     this.$el = $el;
@@ -14,7 +14,7 @@
     this.$el.empty();
     this.$el.append(this.board.render());
   }
-  
+
   View.prototype.bindEvents = function () {
     var view = this;
     $("body").on("keydown", function (event) {
@@ -56,16 +56,20 @@
   View.prototype.gameOver = function () {
     clearInterval(this.gamestate);
   };
-  
+
   View.prototype.step = function (){
     try {
-    this.board.snake.move();      
+      this.board.snake.move();
     }
     catch (e) {
       this.gameOver();
     }
     this.board.possiblyPlaceApple();
-     
+    if (this.board.score === this.board.nextSpeedUp) {
+      clearInterval(this.gamestate);
+      this.board.speedUp();
+      this.gamestate = setInterval(this.step.bind(this), this.board.interval);
+    }
     this.render();
   }
 })();

@@ -77,12 +77,13 @@
     "W": "E"
   }
 
-  var Board = SnakeGame.Board = function (){
+  var Board = SnakeGame.Board = function () {
     this.board = buildBoard(20);
     this.score = 0;
-    this.interval = 300;
+    this.interval = 500;
     this.displayScore;
-  }
+    this.nextSpeedUp = 50;
+  };
 
   function buildBoard(dimensions) {
     var board = [];
@@ -197,6 +198,11 @@
     var randY = Math.floor(Math.random() * size)
     var randX = Math.floor(Math.random() * size)
     return [randY, randX]
+  }
+
+  Board.prototype.speedUp = function () {
+    this.interval *= .9;
+    this.nextSpeedUp += 50;
   }
 
 })();
