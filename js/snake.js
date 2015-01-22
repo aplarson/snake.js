@@ -9,33 +9,32 @@
     this.dir = "E";
     this.last_dir = "E";
     this.segments = [ (new Coord([0,0])), (new Coord([0,1])) ];
-  }
+  };
 
   var Coord = SnakeGame.Coord = function (pos) {
     this.x = pos[1];
     this.y = pos[0];
     this.pos = pos;
-  }
+  };
 
   Coord.prototype.plus = function (dir) {
-    var pos = []
+    var pos = [];
     switch (dir) {
     case "N":
-      pos = [this.y - 1, this.x]
+      pos = [this.y - 1, this.x];
       break;
     case "S":
-      pos = [this.y + 1, this.x]
+      pos = [this.y + 1, this.x];
       break;
     case "W":
-      pos = [this.y, this.x - 1]
+      pos = [this.y, this.x - 1];
       break;
     case "E":
-      pos = [this.y, this.x + 1]
+      pos = [this.y, this.x + 1];
       break;
     }
 
     return new Coord(pos);
-
   };
 
   Coord.prototype.atPos = function (pos) {
@@ -44,7 +43,7 @@
     } else {
       return false;
     }
-  }
+  };
 
   Snake.prototype.move = function (){
     if (this.growth === 0) {
@@ -58,24 +57,24 @@
     this.board.checkInBounds(newCoord);
     this.segments.push(newCoord);
     this.last_dir = this.dir;
-  }
+  };
 
   Snake.prototype.turn = function (dir) {
     if (dir !== Snake.OPPDIRS[this.last_dir]) {
       this.dir = dir;
     }
-  }
+  };
 
   Snake.prototype.grow = function () {
     this.growth += 4;
-  }
+  };
 
   Snake.OPPDIRS = {
     "N": "S",
     "E": "W",
     "S": "N",
     "W": "E"
-  }
+  };
 
   var Board = SnakeGame.Board = function () {
     this.board = buildBoard(20);
@@ -99,27 +98,27 @@
 
   Board.prototype.render = function () {
     var board = this;
-    var boardHTML = "<div class=\"board\">"
+    var boardHTML = "<div class=\"board\">";
     this.board.forEach(function (el, idx) {
-      boardHTML += "<div class=\"row\">"
+      boardHTML += "<div class=\"row\">";
      el.forEach(function (innerEl, innerIdx) {
        switch (board.squareContents([idx, innerIdx])) {
        case "segment":
-         boardHTML += "<div class=\"segment\"></div>"
+         boardHTML += "<div class=\"segment\"></div>";
          break;
        case "apple":
-         boardHTML += "<div class=\"apple\"></div>"
+         boardHTML += "<div class=\"apple\"></div>";
          break;
        case "brick":
-         boardHTML += "<div class=\"brick\"></div>"
+         boardHTML += "<div class=\"brick\"></div>";
          break;
        default:
-         boardHTML += "<div class=\"empty\"></div>"
+         boardHTML += "<div class=\"empty\"></div>";
        }
-     })
-     boardHTML += "</div>"
+     });
+     boardHTML += "</div>";
     })
-    return boardHTML += "</div>"
+    return boardHTML += "</div>";
   };
 
   Board.prototype.start = function () {
@@ -131,12 +130,12 @@
   };
 
   Board.prototype.checkInBounds = function (coord) {
-    if ((coord.x < 0) || (coord.x >= this.board.length)){
-      throw GameOverError
-    } else if ((coord.y < 0) || (coord.y >= this.board.length)){
-      throw GameOverError
+    if ((coord.x < 0) || (coord.x >= this.board.length)) {
+      throw GameOverError;
+    } else if ((coord.y < 0) || (coord.y >= this.board.length)) {
+      throw GameOverError;
     }
-  }
+  };
 
   Board.prototype.squareContents = function (pos) {
     var object = "empty";
@@ -144,25 +143,25 @@
       if (brick.atPos(pos)) {
         object = "brick";
       }
-    })
+    });
     this.snake && this.snake.segments.forEach(function (segment) {
       if (segment.atPos(pos)) {
         object = "segment";
       }
-    })
+    });
     this.apples && this.apples.forEach(function (apple) {
       if (apple.atPos(pos)) {
         object = "apple";
       }
-    })
+    });
     return object;
-  }
+  };
 
   Board.prototype.checkCollision = function (coord) {
     var contents = this.squareContents(coord.pos)
     switch (contents) {
     case "segment":
-      throw GameOverError
+      throw GameOverError;
       break;
     case "apple":
       this.removeApple(coord);
@@ -171,12 +170,12 @@
       this.displayScore();
       break;
     case "brick":
-      throw GameOverError
+      throw GameOverError;
       break;
     default:
       break;
     }
-  }
+  };
 
   Board.prototype.removeApple = function(coord){
     var board = this;
@@ -185,37 +184,34 @@
         board.apples.splice(idx, 1);
         board.bricks.push(coord);
       }
-    })
-  }
+    });
+  };
 
   Board.prototype.displayScore = function () {
     $('#score').html(this.score);
-  }
+  };
 
   Board.prototype.possiblyPlaceApple = function () {
-    var board = this
+    var board = this;
 
-    if (this.apples.length < 5){
+    if (this.apples.length < 5) {
       _.times(2, function () {
-        var pos = randomBoardPos(board.board.length)
-        if (board.squareContents(pos) === "empty"){
-          board.apples.push(new SnakeGame.Coord(pos))
+        var pos = randomBoardPos(board.board.length);
+        if (board.squareContents(pos) === "empty") {
+          board.apples.push(new SnakeGame.Coord(pos));
         }
-
-      })
+      });
     }
-
-  }
+  };
 
   function randomBoardPos(size) {
-    var randY = Math.floor(Math.random() * size)
-    var randX = Math.floor(Math.random() * size)
-    return [randY, randX]
+    var randY = Math.floor(Math.random() * size);
+    var randX = Math.floor(Math.random() * size);
+    return [randY, randX];
   }
 
   Board.prototype.speedUp = function () {
     this.interval *= .9;
     this.nextSpeedUp += 50;
-  }
-
+  };
 })();
